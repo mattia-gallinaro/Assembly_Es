@@ -33,5 +33,14 @@ _start:
 	mov r6, r0
 	add r6, #4
 loop:	
-	mov pc, lr
+ ldr r7 , [r6]
+ cmp r7, r1
+ strGT r7 , [r2]
+ movGT r1, r7
+ strGT r3, [r4]
+ add r3, #1
+ add r6, #4
+ cmp r3, r5
 	bls loop
+
+ mov pc, lr
