@@ -18,29 +18,26 @@ _start:
 	ldr r1, [r0] @salvo il primo valore di list
 
 	ldr r2, =max @ indirizzo in cui salvare il valore massimo
-	str r1, [r2]
+	
+	ldr r4, =indice_max @indirizzo in cui viene contenuto l'indice del valore massimo
 	
 	mov r3, #0 @indice del for loop
 	
-	ldr r4, =indice_max @indirizzo in cui viene contenuto l'indice del valore massimo
-	str r3, [r4]
-	
 	ldr r5, =n @numero di elementi che devo controllare
 	ldr r5, [r5]
-	sub r5, #1 @faccio fino a 199 perchè il primo non lo conto
-
-	add r3, #1
-	mov r6, r0
-	add r6, #4
+	
+	cpy r8, r3 @ per salvare l'indice attuale massimo
 loop:	
- ldr r7 , [r6]
- cmp r7, r1
- strGT r7 , [r2]
- movGT r1, r7
- strGT r3, [r4]
- add r3, #1
- add r6, #4
- cmp r3, r5
-	bls loop
-
- mov pc, lr
+	ldr r7 , [r0]
+	cmp r1, r7
+	movLE r1, r7 @ salvo il valore massimo attuale
+	cpyLE r8, r3 @ ''    l'indice del val max
+	add r3, r3, #1
+	add r0, r0, #4 @ aumento di 4 perchè una word è lunga 4 byte e così salto alla word successiva
+	cmp r3, r5 @ controllo che r3 non abbia raggiunto il valore 200 
+	blo loop
+	
+	str r1, [r2] @ salva in memoria il valore massimo di list , in questo caso 9987
+	str r8, [r4] @ salva in memoria l'indice di list in cui si trova 
+	
+	mov pc, lr
