@@ -1,4 +1,3 @@
-
 .data
 
 n: .word 200 @ dimensione array
@@ -11,18 +10,7 @@ V: .word -697, 1625, -873, 1375, -158, 1162, -1590, -1971, -345, 260, -956, 1329
 .global _start
 
 _start:
-	
-	push {r0, r1, lr}@ salva contenuto registri
-    ldr r1, =n    @ carica indirizzo con la dimensione
-    ldr r1, [r1]    @ carica la lunghezza dell'array in r1
-    ldr r0, =V    @ indirizzo del vettore in r0
-    bl find_max    @ chiama la funzione per trovare il massimo
-    pop {r0, r1, lr}@ recupera valori iniziali dei registri
-    mov pc, lr    @ esci
-
-
-_start:
-		push{r11, lr} @salvo fp e lr
+		push {r11, lr} @salvo fp e lr
 		mov r11 , sp @setto fp a 
 		ldr r0, =V
 		ldr r0, [r0]
@@ -33,8 +21,7 @@ _start:
 		bl func_max_2
 		add sp, sp, #8 @elimino i dati salvati del frame
 		mov sp, r11
-		pop{r11, lr}@estraggo i vecchi valori
-		mov pc, lr
+		pop {r11, pc}@estraggo i vecchi valori
 		
 
 func_max_2:
@@ -55,25 +42,5 @@ loop:
         add r1,#4
         cmp r1,r3 @confronto l'indirizzo attuale con quello 
         ble loop
-        pop {r1-r4, r11, lr}
-        mov pc, lr   @ ritorna alla funzione chiamante.
-	
-
-find_max:
-   @@@ istruzioni della funzione max
-        push {r2-r5, lr}
-        cpy r2, r0
-        ldr r0, [r2]
-        mov r5, #4
-        mul r4, r1, r5
-        add r4, r2, r4
-        add r2, #4
-loop:
-        ldr r3, [r2]
-        cmp r3, r0
-        movGT r0,r3
-        add r2,r2,#4
-        cmp r2,r4
-        ble loop
-        pop {r2-r5,lr}
+        pop {r1-r4, r11, pc} @(in teoria) non serve che io assegni il valore di fp a sp perchè 
         mov pc, lr   @ ritorna alla funzione chiamante.
