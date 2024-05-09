@@ -19,7 +19,8 @@ _start:
 		ldr r0 , [r0]
 		push {r0}
 		bl func_max_2
-		pop {r1-r2} 
+		@ pop {r1-r2}
+  add sp, sp , #8 @ per cancellare i valori salvati dato che non devo recuperarli
 		mov sp, r11
 		pop {r11, pc}
 		
